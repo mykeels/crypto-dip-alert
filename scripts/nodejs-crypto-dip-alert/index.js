@@ -3,7 +3,6 @@
 require('isomorphic-fetch');
 const { program } = require('commander');
 const chalk = require('chalk');
-const NotificationsFactory = require('./notifications');
 
 const INTERVAL_MS = 10000;
 const PAGINATION_COUNT = 4;
@@ -14,15 +13,34 @@ program
   .option('-p, --price <price>', 'A price value to monitor', '0.01')
   .option('-t, --type <type>', '"percent" or "cents"', 'percent')
   .option('-l, --list', 'List available Cryptos')
+  .option('-e, --env', 'View and Edit the .env file')
   .parse(process.argv);
 
 (async () => {
+  if (program.env) {
+    const fs = require('fs');
+    const path = require('path');
+    const openText = require('open-file-text-editor');
+    const envFilePath = path.join(__dirname, '.env');
+    const envSampleFilePath = path.join(__dirname, '.env.sample');
+    if (fs.existsSync(envFilePath)) {
+      await openText(envFilePath);
+    }
+    else {
+      fs.copyFileSync(envSampleFilePath, envFilePath);
+      await openText(envFilePath);
+    }
+    return;
+  }
+
+  const NotificationsFactory = require('./notifications');
   const notifications = await NotificationsFactory;
   const { data: assets } = await fetch(COINCAP_ASSETS_URL).then(res => res.json());
   const assetDict = assets.reduce((obj, item) => ({
     ...obj,
     [item.symbol]: item
   }), {});
+
 
   if (program.list) {
     console.log(

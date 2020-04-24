@@ -16,6 +16,7 @@
     "isomorphic-fetch": "^2.2.1",
     "mailgun-js": "^0.22.0",
     "messaging-api-telegram": "^0.8.2",
-    "nodemailer": "^6.4.6"
+    "nodemailer": "^6.4.6",
+    "open-file-text-editor": "0.0.1"
   }
 }
