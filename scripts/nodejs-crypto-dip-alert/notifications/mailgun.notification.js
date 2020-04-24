@@ -11,7 +11,7 @@ const mailgun = require('mailgun-js')({
  * @param {*} dipThreshold
  */
 const notify = async (coin, maxPrice, currentPrice, dipThreshold) => {
-  if (!process.env.NOTIFY_TELEGRAM) return;
+  if (!process.env.NOTIFY_MAILGUN || process.env.NOTIFY_MAILGUN !== 'true') return;
 
   const dip = `-$${Math.abs(currentPrice - maxPrice)}`;
   const from = process.env.MAILGUN_FROM;
