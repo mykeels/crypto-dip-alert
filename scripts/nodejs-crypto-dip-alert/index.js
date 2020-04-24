@@ -53,9 +53,7 @@ program
     console.log(`
 Monitoring: ${known.join(', ')}
 
-Price Dip: ${program.price}
-
-Dip Type: ${program.type}
+Price Dip: ${program.price}${program.type === 'percent' ? '%' : ' cents'}
 `);
 
     let maxPriceSinceLastDip = {};
