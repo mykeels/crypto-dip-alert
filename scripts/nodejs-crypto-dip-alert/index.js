@@ -23,13 +23,22 @@ program
     const openText = require('open-file-text-editor');
     const envFilePath = path.join(__dirname, '.env');
     const envSampleFilePath = path.join(__dirname, '.env.sample');
-    if (fs.existsSync(envFilePath)) {
-      await openText(envFilePath);
+    const openEnvFile = async () => {
+      try {
+        await openText(envFilePath);
+      }
+      catch {
+        console.warn(`Could not open .env file. Try any of the following commands instead:
+        
+        nano ${envFilePath}
+        open ${envFilePath}
+        notepad ${envFilePath}`);
+      }
     }
-    else {
+    if (!fs.existsSync(envFilePath)) {
       fs.copyFileSync(envSampleFilePath, envFilePath);
-      await openText(envFilePath);
     }
+    await openEnvFile();
     return;
   }
 
