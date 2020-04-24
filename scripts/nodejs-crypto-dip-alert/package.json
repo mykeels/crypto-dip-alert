@@ -12,6 +12,9 @@
   "dependencies": {
     "chalk": "^4.0.0",
     "commander": "^5.0.0",
-    "isomorphic-fetch": "^2.2.1"
+    "dotenv": "^8.2.0",
+    "isomorphic-fetch": "^2.2.1",
+    "mailgun-js": "^0.22.0",
+    "messaging-api-telegram": "^0.8.2"
   }
 }

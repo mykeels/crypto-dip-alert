@@ -3,6 +3,7 @@
 require('isomorphic-fetch');
 const { program } = require('commander');
 const chalk = require('chalk');
+const NotificationsFactory = require('./notifications');
 
 const INTERVAL_MS = 10000;
 const PAGINATION_COUNT = 4;
@@ -16,6 +17,7 @@ program
   .parse(process.argv);
 
 (async () => {
+  const notifications = await NotificationsFactory;
   const { data: assets } = await fetch(COINCAP_ASSETS_URL).then(res => res.json());
   const assetDict = assets.reduce((obj, item) => ({
     ...obj,
@@ -88,7 +90,7 @@ Price Dip: ${program.price}${program.type === 'percent' ? '%' : ' cents'}
 
         const currentPrice = +Number(coin.priceUsd).toFixed(2);
 
-        const dipThreshold = dipThresholdInCents(maxPrice);
+        const dipThreshold = +dipThresholdInCents(maxPrice).toFixed(2);
 
         const priceDifference = +Number(currentPrice - maxPrice).toFixed(2);
 
@@ -104,7 +106,7 @@ Price Dip: ${program.price}${program.type === 'percent' ? '%' : ' cents'}
         }
         else if ((maxPrice - currentPrice) >= dipThreshold) {
           // TODO send notification
-          console.log(coin.symbol, 'SEND NOTIFICATION');
+          await notifications.map(fn => fn(coin, maxPrice, currentPrice, dipThreshold));
         }
 
       }

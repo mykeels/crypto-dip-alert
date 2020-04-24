@@ -5,9 +5,10 @@
  * @param {*} currentPrice
  * @param {*} dipThreshold
  */
-const notify = (coin, maxPrice, currentPrice, dipThreshold) => {
+const notify = async (coin, maxPrice, currentPrice, dipThreshold) => {
   if (!process.env.NOTIFY_TELEGRAM) return;
-
+  console.log(coin.symbol, `🚨🚨🚨 ALERT!!! 🚨🚨🚨`);
+  await Promise.resolve();
 }
 
-export default notify;
+module.exports = notify;
