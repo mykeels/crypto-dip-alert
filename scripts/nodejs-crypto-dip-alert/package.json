@@ -1,0 +1,17 @@
+{
+  "name": "crypto-dip-alert",
+  "version": "1.0.0",
+  "description": "A CLI tool that notifies you, when the price of a crypto goes down",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "commander": "^5.0.0",
+    "isomorphic-fetch": "^2.2.1"
+  }
+}
