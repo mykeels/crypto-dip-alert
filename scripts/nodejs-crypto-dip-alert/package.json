@@ -1,6 +1,6 @@
 {
   "name": "crypto-dip-alert",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A CLI tool that notifies you, when the price of a crypto goes down",
   "main": "index.js",
   "scripts": {
