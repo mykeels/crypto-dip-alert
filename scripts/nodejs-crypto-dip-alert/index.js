@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+require('./polyfills/rootdir.polyfill');
 require('isomorphic-fetch');
 const { program } = require('commander');
 const chalk = require('chalk');
@@ -132,7 +133,6 @@ Price Dip: ${program.price}${program.type === 'percent' ? '%' : ' cents'}
           maxPriceSinceLastDip[coin.symbol] = currentPrice;
         }
         else if ((maxPrice - currentPrice) >= dipThreshold) {
-          // TODO send notification
           await notifications.map(fn => fn(coin, maxPrice, currentPrice, dipThreshold));
         }
 
