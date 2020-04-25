@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-require('./polyfills/rootdir.polyfill');
+require('dotenv').config();
 require('isomorphic-fetch');
+
 const { program } = require('commander');
 const chalk = require('chalk');
 
