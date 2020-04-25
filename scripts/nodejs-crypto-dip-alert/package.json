@@ -1,0 +1,25 @@
+{
+  "name": "crypto-dip-alert",
+  "version": "0.0.9",
+  "description": "A CLI tool that notifies you, when the price of a crypto goes down past a threshold",
+  "main": "index.js",
+  "bin": "index.js",
+  "preferGlobal": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "mykeels",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "commander": "^5.0.0",
+    "dotenv": "^8.2.0",
+    "isomorphic-fetch": "^2.2.1",
+    "mailgun-js": "^0.22.0",
+    "messaging-api-telegram": "^0.8.2",
+    "nodemailer": "^6.4.6",
+    "open-file-text-editor": "0.0.1"
+  }
+}
