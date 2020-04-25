@@ -4,17 +4,17 @@ import { AsyncStorage } from 'react-native';
 export default key => {
   const [storageItem, setStorageItem] = useState(null);
 
-  const getStorageItem = useCallback(async() => {
+  const getStorageItem = useCallback(async () => {
     const data = await AsyncStorage.getItem(key);
     setStorageItem(JSON.parse(data));
   }, [key]);
 
-  function updateStorageItem(data) {
-    AsyncStorage.setItem(key, data);
-    setStorageItem(JSON.stringify(data));
+  const updateStorageItem = (data) => {
+    AsyncStorage.setItem(key, JSON.stringify(data));
+    setStorageItem(data);
   }
 
-  function clearStorageItem() {
+  const clearStorageItem = () => {
     AsyncStorage.removeItem(key);
     setStorageItem(null);
   }
