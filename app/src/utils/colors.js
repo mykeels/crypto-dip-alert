@@ -5,5 +5,6 @@ export default {
   BLUE: '#81B0FF',
   RED: '#CE0202',
   GREEN: '#257625',
-  NONE: null
+  NONE: null,
+  GREY: '#9A9A9A',
 };

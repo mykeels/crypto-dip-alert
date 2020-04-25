@@ -1,33 +1,45 @@
 import React, { useReducer } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 import colors from '../utils/colors';
 import Header from './Header.component';
+import Button from './Button.component';
 
 
 const Settings = () => {
-  const [formFields, setFormFields] = useReducer(
-    (state, newState) => ({ ...state, ...newState }),
-    { threshold: 0 }
-  );
+  const onSubmit = () => {
+    console.log('submitting')
+  };
 
   return (
     <View style={styles.container}>
       <Header text="Configure Alert" />
-      <ScrollView styles={styles.formContainer}>
-        <Text>{formFields.threshold}</Text>
-        <Text>{formFields.threshold}</Text>
-        <Text>{formFields.threshold}</Text>
+      <ScrollView contentContainerStyle={styles.formContainer}>
+        <View style={styles.optionBlock}>
+          <Text style={styles.settingsText}>
+            How would you like to monitor prices?
+          </Text>
+        </View>
+
+        <View style={styles.optionBlock}>
+          <Text style={styles.settingsText}>
+            How much dip should we tell you of?
+          </Text>
+        </View>
+
+        <View style={styles.optionBlock}>
+          <Text style={styles.settingsText}>
+            What coins do you want to track?
+          </Text>
+        </View>
+
+        <Button
+          label={'UPDATE'}
+          btnStyle={styles.updateBtn}
+          onPress={onSubmit}
+          disabled
+        />
       </ScrollView>
-      <Text>Done</Text>
-      <Text>Done</Text>
-      <Text>Done</Text>
-      <Text>Done</Text>
-      <Text>Done</Text>
-      <Text>Done</Text>
-      <Text>Done</Text>
-      <Text>Done</Text>
     </View>
   );
 };
@@ -37,22 +49,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   formContainer: {
-    backgroundColor: 'red',
     flex: 1,
-    paddingHorizontal: 20,
+    padding: 10,
   },
-  linearGradient: {
-    flex: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 5
+  updateBtn: {
+    alignSelf: 'center',
+    marginVertical: 10,
   },
-  buttonText: {
-    fontSize: 18,
-    textAlign: 'center',
-    margin: 10,
-    color: '#ffffff',
-    backgroundColor: 'transparent',
+  settingsText: {
+    fontWeight: 'bold',
+    fontSize: 15
+  },
+  optionBlock: {
+    marginVertical: 20,
   },
 });
 
