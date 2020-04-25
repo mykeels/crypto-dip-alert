@@ -9,7 +9,7 @@ import colors from '../utils/colors';
 
 const Home = () => {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <AlertButton />
       <Spacer height={50} />
       <CoinCard />
@@ -32,6 +32,7 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
+    backgroundColor: 'transparent'
   },
   helpText: {
     color: colors.GREY,
