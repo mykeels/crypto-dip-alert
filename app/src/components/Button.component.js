@@ -1,54 +1,42 @@
-import React, { memo, useEffect, useState, Fragment } from 'react';
-import { View, StyleSheet, Text, TouchableHighlight } from 'react-native';
+import React, { memo } from 'react';
+import {
+  TouchableWithoutFeedback,
+  Text,
+  StyleSheet,
+  View
+} from 'react-native';
 
 import colors from '../utils/colors';
-import useAsyncStorage from '../hooks/useAsyncStorage';
-import { USER_SETTINGS } from '../utils/constants';
-import Spinner from './Spinner.component';
 
-const Button = () => {
-  const [isAlertOn, setAlertStatus] = useState(false);
-  const errorStyle = { backgroundColor: isAlertOn ? colors.NONE : colors.RED };
-  const successStyle = { backgroundColor: isAlertOn ? colors.GREEN : colors.NONE };
 
-  const toggleAlerting = () => setAlertStatus(!isAlertOn);
+const Button = ({ label, onPress, btnStyle, disabled }) => {
+  const buttonColor = btnStyle.color || colors.YELLOW;
+  const btnStyleProps = {
+    backgroundColor: disabled ? colors.GREY : buttonColor,
+    opacity: disabled ? 0.3 : 1,
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.alertText}>Alert {isAlertOn ? 'ON' : 'OFF'}</Text>
-      <TouchableHighlight style={styles.btnContainer} onPress={toggleAlerting}>
-        <Fragment>
-          <View style={[styles.btn, errorStyle]} />
-          <View style={[styles.btn, successStyle]} />
-        </Fragment>
-      </TouchableHighlight>
-    </View>
-  )
-};
+    <TouchableWithoutFeedback onPress={onPress} disabled={disabled}>
+      <View style={[styles.button, btnStyle, btnStyleProps]}>
+        <Text style={styles.buttonText}>
+          {label}
+        </Text>
+      </View>
+    </TouchableWithoutFeedback>
+  );
+}
 
 const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
+  button: {
+    width: 100,
+    padding: 5,
   },
-  alertText: {
+  buttonText: {
     fontWeight: 'bold',
-    fontSize: 18
+    fontSize: 18,
+    textAlign: 'center',
   },
-  btnContainer: {
-    borderWidth: 1,
-    marginHorizontal: 10,
-    height: 30,
-    width: 80,
-    display: 'flex',
-    flexDirection: 'row'
-  },
-  btn: {
-    height: 28,
-    width: 40,
-  }
-})
+});
 
-export default Button;
+export default memo(Button);
