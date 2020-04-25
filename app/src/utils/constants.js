@@ -7,7 +7,7 @@ export const TRACKING_SYMBOLS = ['¢', '%'];
 export const SUPPORTED_COINS = [
   { abbreviation: 'BTC', value: 'bitcoin' },
   { abbreviation: 'ETH', value: 'ethereum' },
-  { abbreviation: 'MIN', value: 'minero' },
+  { abbreviation: 'MON', value: 'monero' },
   { abbreviation: 'LTC', value: 'litecoin' },
 ];
 

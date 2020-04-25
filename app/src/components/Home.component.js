@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
+import WS from 'react-native-websocket';
 
 // components
 import AlertButton from './AlertButton.component';
@@ -13,17 +14,18 @@ import Spinner from './Spinner.component';
 import colors from '../utils/colors';
 import { USER_SETTINGS } from '../utils/constants';
 
+// hooks
+import useAsyncStorage from '../hooks/useAsyncStorage';
 
 const Home = () => {
+  const websocketRef = useRef(null);
   const [coinDetails, setCoinDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setIsRefreshing] = useState(false);
+  const [settings, updateSettings] = useAsyncStorage(USER_SETTINGS);
   const baseUrl = 'https://api.coincap.io/v2/rates';
 
   const fetchPrices = async () => {
-    const stringSettings = await AsyncStorage.getItem(USER_SETTINGS);
-    const settings = JSON.parse(stringSettings);
-
     const result = await Promise
       .all(settings.coinsToTrack.map((coin) => {
         return fetch(`${baseUrl}/${coin}`, { method: 'GET' })
@@ -36,8 +38,13 @@ const Home = () => {
   }
 
   useEffect(() => {
-    fetchPrices();
-  }, []);
+    if (settings) {
+      fetchPrices();
+    }
+  }, [settings]);
+
+  console.log(settings, ",==== home")
+  if (isLoading) return <Spinner />;
 
   return (
     <ScrollView
@@ -61,7 +68,6 @@ const Home = () => {
         </Text>
       </View>
       {isLoading ? <Spinner /> : coinDetails.map(({ data }) => {
-        console.log(JSON.stringify(data, null, 2));
         const { id, currencySymbol, symbol, rateUsd } = data;
 
         let label = `${symbol}`;
