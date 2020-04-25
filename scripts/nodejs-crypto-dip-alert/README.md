@@ -5,7 +5,7 @@ A CLI tool to monitor the prices of crypto, and notify you when it drops past a 
 ## Installation and Usage
 
 - Make sure you have [NodeJS](https://nodejs.org/en/download/) installed.
-- Run `npm i -g crypto-dip-alert` or `yarn add global crypto-dip-alert` to install to your computer.
+- Run `npm i -g crypto-dip-alert` or `yarn global add crypto-dip-alert` to install to your computer.
 - Run `crypto-dip-alert -e` or `crypto-dip-alert --env` to view and edit the `.env` file according to the [instructions given here](./ENV.md).
 - Run `crypto-dip-alert` with the right options.
 
