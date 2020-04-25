@@ -984,6 +984,11 @@
   dependencies:
     deep-assign "^3.0.0"
 
+"@react-native-community/checkbox@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.npmjs.org/@react-native-community/checkbox/-/checkbox-0.3.0.tgz#378c43caa7da7d6971e8b1d072d43c42f2d637aa"
+  integrity sha512-O/H/I9r+9Hn91oO6rS0IWnaUAtuUg1wuLM4U+MWogW1JzUrFxz+fWRnCl1g5zX1rLbHb4m1bZkBHSJM2dOBZpw==
+
 "@react-native-community/cli-debugger-ui@^4.7.0":
   version "4.7.0"
   resolved "https://registry.npmjs.org/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-4.7.0.tgz#4a8689f56b99378b24bbbf0ff6a89869d667f013"
@@ -5576,6 +5581,11 @@ react-native-screens@^2.5.0:
   integrity sha512-5Ak/J41eZzvU2zvik8YH825ppFdKR4cootbAq9ETwdQoN0fu4GBdOpX7paKW2jFCTsh3OOoyRRW2xYvLczZqVw==
   dependencies:
     debounce "^1.2.0"
+
+react-native-simple-radio-button@^2.7.4:
+  version "2.7.4"
+  resolved "https://registry.npmjs.org/react-native-simple-radio-button/-/react-native-simple-radio-button-2.7.4.tgz#86e2dbe8af9e6bf60eee088f60466f7a975e7758"
+  integrity sha512-QOZNmJUn0ViBGU+at7wAG/uGzd5PfXi0kMHr9lfTCLXknW/f9f2fOVjxjdHvOCdf/zA/eMJBjGjtusSDzQf1+w==
 
 react-native-vector-icons@^6.6.0:
   version "6.6.0"

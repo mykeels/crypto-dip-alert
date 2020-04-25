@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    backgroundColor: 'pink',
     flex: 1,
   },
 });
