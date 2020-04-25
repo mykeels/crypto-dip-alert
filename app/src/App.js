@@ -9,15 +9,17 @@ import useAsyncStorage from './hooks/useAsyncStorage';
 import { USER_SETTINGS, INITIAL_USER_SETTINGS } from './utils/constants';
 
 const App = () => {
-  // const settings = useAsyncStorage(USER_SETTINGS);
-
   const initializeSettings = async () => {
+    console.log('inside intit')
     const settings = await AsyncStorage.getItem(USER_SETTINGS);
     if (!settings) {
       const payload = JSON.stringify(INITIAL_USER_SETTINGS);
       await AsyncStorage.setItem(USER_SETTINGS, payload);
     }
-  }
+    // await AsyncStorage.removeItem(USER_SETTINGS);
+    console.log('setttings', settings)
+  };
+
   useEffect(() => {
     initializeSettings();
   }, []);

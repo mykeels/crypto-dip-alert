@@ -10,7 +10,7 @@ import colors from '../utils/colors';
 
 
 const Button = ({ label, onPress, btnStyle, disabled }) => {
-  const buttonColor = btnStyle.color || colors.YELLOW;
+  const buttonColor = btnStyle.color || colors.BLACK;
   const btnStyleProps = {
     backgroundColor: disabled ? colors.GREY : buttonColor,
     opacity: disabled ? 0.3 : 1,
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     textAlign: 'center',
+    color: colors.WHITE
   },
 });
 

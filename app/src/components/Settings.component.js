@@ -1,35 +1,57 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import RadioForm from 'react-native-simple-radio-button';
 
 import colors from '../utils/colors';
 import Header from './Header.component';
 import Button from './Button.component';
+import {
+  TRACKING_CHOICES,
+  SUPPORTED_COINS,
+  USER_SETTINGS,
+  TRACKING_SYMBOLS
+} from '../utils/constants';
+import useAsyncStorage from '../hooks/useAsyncStorage';
+import Spinner from './Spinner.component';
 
 
 const Settings = () => {
-  const choices = ['Cents', 'Percent'];
+  const [settings, updateSettings] = useAsyncStorage(USER_SETTINGS);
+
   const disabled = false;
-  const monitoringOptions = choices.map((choice, index) => ({
+  const monitoringOptions = TRACKING_CHOICES.map((choice, index) => ({
     label: choice,
     value: index
   }));
 
   const [monitoringOption, setMonitoringOption] = useState(0);
-  const [threshold, setThreshold] = useState(0);
-  const coinsToTrack = [
-    { abbreviation: 'BTC', value: 'bitcoin' },
-    { abbreviation: 'ETH', value: 'ethereum' },
-    { abbreviation: 'MIN', value: 'minero' },
-    { abbreviation: 'LTC', value: 'litecoin' },
-  ];
+  const [threshold, setThreshold] = useState('');
 
   const onSubmit = () => {
     console.log('submitting')
   };
 
-  console.log({ threshold, monitoringOption })
+  useEffect(() => {
+    if (settings) {
+      setMonitoringOption(TRACKING_CHOICES.indexOf(settings.trackingOption));
+      setThreshold(settings.threshold.toString());
+    }
+  }, [settings]);
+
+  if (!settings) {
+    return (
+      <View style={{flex: 1}}>
+        <Spinner />
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -60,9 +82,10 @@ const Settings = () => {
               textContentType={'oneTimeCode'}
               keyboardType={'decimal-pad'}
               enablesReturnKeyAutomatically
+              value={threshold}
             />
             <Text style={styles.activeOption}>
-              {choices[monitoringOption]}
+              {TRACKING_SYMBOLS[monitoringOption]}
             </Text>
           </View>
         </View>
@@ -71,17 +94,17 @@ const Settings = () => {
           <Text style={styles.settingsText}>
             What coins do you want to track?
           </Text>
-          {coinsToTrack.map((coin, index) => (
-            <View style={styles.coinsContainer} key={index}>
-              <CheckBox
-                value={true}
-                disabled={false}
-              />
-              <Text>
-                {coin.abbreviation} ({coin.value})
-              </Text>
-            </View>
-          ))}
+          {SUPPORTED_COINS.map((coin, index) => {
+            const isChecked = settings.coinsToTrack.includes(coin.value);
+            return (
+              <View style={styles.coinsContainer} key={index}>
+                <CheckBox value={isChecked} />
+                <Text>
+                  {coin.abbreviation} ({coin.value})
+                </Text>
+              </View>
+            );
+          })}
         </View>
 
         <Button
@@ -126,7 +149,8 @@ const styles = StyleSheet.create({
   },
   activeOption: {
     fontWeight: 'bold',
-    fontSize: 20
+    fontSize: 20,
+    width: 15,
   },
   coinsContainer: {
     flexDirection: 'row',
