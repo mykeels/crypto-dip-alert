@@ -5,6 +5,7 @@ require('isomorphic-fetch');
 
 const { program } = require('commander');
 const chalk = require('chalk');
+const openEnvFile = require('./open-env-file');
 
 const INTERVAL_MS = 10000;
 const PAGINATION_COUNT = 4;
@@ -20,26 +21,6 @@ program
 
 (async () => {
   if (program.env) {
-    const fs = require('fs');
-    const path = require('path');
-    const openText = require('open-file-text-editor');
-    const envFilePath = path.join(__dirname, '.env');
-    const envSampleFilePath = path.join(__dirname, '.env.sample');
-    const openEnvFile = async () => {
-      try {
-        await openText(envFilePath);
-      }
-      catch {
-        console.warn(`Could not open .env file. Try any of the following commands instead:
-        
-        nano ${envFilePath}
-        open ${envFilePath}
-        notepad ${envFilePath}`);
-      }
-    }
-    if (!fs.existsSync(envFilePath)) {
-      fs.copyFileSync(envSampleFilePath, envFilePath);
-    }
     await openEnvFile();
     return;
   }
