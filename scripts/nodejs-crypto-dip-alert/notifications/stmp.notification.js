@@ -24,6 +24,7 @@ const notify = async (coin, maxPrice, currentPrice, dipThreshold) => {
   <p>We detected a ${dip} dip in the price of ${
       coin.symbol
     }, and thought we should let you know.</p>
+  <p>The Price dropped from $${maxPrice} to $${currentPrice}.</p>
   <br>
   <p>Regards,</p>
   <p>Crypto Dip Alert</p>`;

@@ -16,7 +16,7 @@ const notify = async (coin, maxPrice, currentPrice, dipThreshold) => {
   if (!process.env.NOTIFY_TELEGRAM || process.env.NOTIFY_TELEGRAM !== 'true') return;
 
   const dip = `-$${Math.abs(currentPrice - maxPrice)}`;
-  const text = `We detected a ${dip} dip in the price of ${coin.symbol}, and thought we should let you know.`;
+  const text = `We detected a ${dip} dip in the price of ${coin.symbol}, and thought we should let you know.\n\nThe Price dropped from $${maxPrice} to $${currentPrice}.`;
 
   await client.sendMessage(
     chatId,
