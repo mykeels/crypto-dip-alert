@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -17,6 +17,7 @@ import { USER_SETTINGS } from '../utils/constants';
 const Home = () => {
   const [coinDetails, setCoinDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setIsRefreshing] = useState(false);
   const baseUrl = 'https://api.coincap.io/v2/rates';
 
   const fetchPrices = async () => {
@@ -29,9 +30,9 @@ const Home = () => {
           .then(res => res.json())
       }));
 
-    console.log(result);
     setCoinDetails(result);
     setIsLoading(false);
+    refreshing && setIsRefreshing(false);
   }
 
   useEffect(() => {
@@ -39,9 +40,26 @@ const Home = () => {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={<RefreshControl
+        refreshing={refreshing}
+        onRefresh={fetchPrices} />}
+    >
       <AlertButton />
-      <Spacer height={50} />
+      <Spacer height={70} />
+
+      <View style={styles.helpTextContainer}>
+        <Icon
+          name="refresh"
+          color={colors.GREY}
+          size={15}
+          style={styles.helpIcon}
+        />
+        <Text style={styles.helpText}>
+        Drag the screen down to refresh
+        </Text>
+      </View>
       {isLoading ? <Spinner /> : coinDetails.map(({ data }) => {
         console.log(JSON.stringify(data, null, 2));
         const { id, currencySymbol, symbol, rateUsd } = data;
