@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef
+} from 'react';
 import {
   View,
   Text,
@@ -9,23 +13,27 @@ import {
 import CheckBox from '@react-native-community/checkbox';
 import RadioForm from 'react-native-simple-radio-button';
 
+// components
 import colors from '../utils/colors';
 import Header from './Header.component';
 import Button from './Button.component';
+import Spinner from './Spinner.component';
+import Notification from './Notification.component';
+
 import {
   TRACKING_CHOICES,
   SUPPORTED_COINS,
   USER_SETTINGS,
   TRACKING_SYMBOLS
 } from '../utils/constants';
+
+// hooks
 import useAsyncStorage from '../hooks/useAsyncStorage';
-import Spinner from './Spinner.component';
 
 
 const Settings = () => {
+  const radioButtonRef = useRef(null);
   const [settings, updateSettings] = useAsyncStorage(USER_SETTINGS);
-
-  const disabled = false;
   const monitoringOptions = TRACKING_CHOICES.map((choice, index) => ({
     label: choice,
     value: index
@@ -33,15 +41,58 @@ const Settings = () => {
 
   const [monitoringOption, setMonitoringOption] = useState(0);
   const [threshold, setThreshold] = useState('');
+  const [userCoinsToTrack, setUserCoinsToTrack] = useState([]);
+  const [notification, setNotification] = useState({});
 
   const onSubmit = () => {
-    console.log('submitting')
+    const trackingOption = TRACKING_CHOICES[monitoringOption];
+
+    const isThresholdNotInteger = isNaN(threshold);
+    if (isThresholdNotInteger) {
+      const text = 'Threshold is not an integer.'
+      return setNotification({ type: 'error', text });
+    }
+
+    const integerThreshold = parseInt(threshold, 10);
+    if (integerThreshold < 0) {
+      const text = 'Threshold must be a positive integer'
+      return setNotification({ type: 'error', text });
+    }
+
+    if (trackingOption === 'Percent' && integerThreshold > 100) {
+      const text = 'Threshold cannot be more than 100%'
+      return setNotification({ type: 'error', text });
+    }
+
+    updateSettings({
+      ...settings,
+      trackingOption,
+      threshold: parseInt(threshold, 10),
+      coinsToTrack: userCoinsToTrack
+    });
+    setNotification({ type: 'success', text: 'Update Successful' });
   };
+
+  const onCheckChange = (coin, value) => {
+    if (value) {
+      return setUserCoinsToTrack([
+        ...userCoinsToTrack,
+        coin
+      ]);
+    }
+    const newUserCoins = userCoinsToTrack.filter(userCoin => {
+      return userCoin !== coin;
+    });
+    return setUserCoinsToTrack(newUserCoins)
+  }
 
   useEffect(() => {
     if (settings) {
-      setMonitoringOption(TRACKING_CHOICES.indexOf(settings.trackingOption));
+      const monitorOptionIdx = TRACKING_CHOICES.indexOf(settings.trackingOption);
+      radioButtonRef.current.updateIsActiveIndex(monitorOptionIdx);
+      setMonitoringOption(monitorOptionIdx);
       setThreshold(settings.threshold.toString());
+      setUserCoinsToTrack(settings.coinsToTrack);
     }
   }, [settings]);
 
@@ -62,7 +113,8 @@ const Settings = () => {
             How would you like to monitor prices?
           </Text>
           <RadioForm
-            initial={0}
+            initial={monitoringOption}
+            ref={radioButtonRef}
             radio_props={monitoringOptions}
             onPress={(value) => setMonitoringOption(value)}
             buttonColor={colors.BLACK}
@@ -95,10 +147,11 @@ const Settings = () => {
             What coins do you want to track?
           </Text>
           {SUPPORTED_COINS.map((coin, index) => {
-            const isChecked = settings.coinsToTrack.includes(coin.value);
+            const isChecked = userCoinsToTrack.includes(coin.value);
+
             return (
               <View style={styles.coinsContainer} key={index}>
-                <CheckBox value={isChecked} />
+                <CheckBox value={isChecked} onValueChange={(value) => onCheckChange(coin.value, value)} />
                 <Text>
                   {coin.abbreviation} ({coin.value})
                 </Text>
@@ -111,8 +164,8 @@ const Settings = () => {
           label={'UPDATE'}
           btnStyle={styles.updateBtn}
           onPress={onSubmit}
-          disabled={disabled}
         />
+        <Notification {...notification} />
       </ScrollView>
     </View>
   );

@@ -6,9 +6,9 @@ import colors from '../utils/colors';
 
 const CoinCard = (props) => {
   const {
-    difference = 23.45,
-    price = '7567.23',
-    label = 'BTC'
+    difference = null,
+    price,
+    label
   } = props;
 
   const isIncrease = difference > 0;
