@@ -11,9 +11,7 @@ Contains software for notifying the user, when the price of monitored cryptocurr
 
 - [coincap.io](https://docs.coincap.io/?version=latest)
 
-## Documentation
-
-### Adding Custom Notifiers
+## Custom Notifications
 
 To add a Custom Notification Provider:
 * Create a file entry in the `scripts/nodejs-crypto-dip-alert/notifications` folder ending with `.notification.js`
@@ -27,7 +25,7 @@ To add a Custom Notification Provider:
 * You can add configs to the `.env` file to determine if custom notif will be used.
 * e.g. `NOTIFY_YORUBA=` `NOTIFY_MAILGUN=`
 
-### Walkthrough
+### Example with Yoruba Notification
 ```js
 
 /**
@@ -38,7 +36,7 @@ To add a Custom Notification Provider:
  * @param {number} dipThreshold
  */
 const notify = async (coin, maxPrice, currentPrice, dipThreshold) => {
-  // Turn on or off via env flags
+  // early return if not set in env flags
   if (!process.env.NOTIFY_YORUBA || process.env.NOTIFY_YORUBA !== 'true') return;
   console.log(`[🚨🚨🚨💰🚨🚨🚨] Egbami, ye, 😢 ${coin.symbol} ti jona`);
   console.log(`[👀] Iwọn ti o pọju: ${maxPrice} `);
@@ -49,5 +47,4 @@ const notify = async (coin, maxPrice, currentPrice, dipThreshold) => {
 }
 
 module.exports = notify;
-
 ```
