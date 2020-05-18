@@ -83,17 +83,15 @@ Price Dip: ${program.price}${program.type === 'percent' ? '%' : ' cents'}
     }
 
     async function checkPrices() {
-
       const cryptos = (await Promise.all(
-        known.map(async symbol => {
+        known.map(symbol => {
           const id = assetDict[symbol].id;
-          try {
-            const res = await fetch(`https://api.coincap.io/v2/assets/${id}`);
-            return res.json();
-          } catch (err) {
-            console.error('Error fetching coin data: ', err.message);
-            return { data: null };
-          }
+          return fetch(`https://api.coincap.io/v2/assets/${id}`)
+            .then(res => res.json())
+            .catch(err => {
+              console.error(`Error fetching ${id} data: `, err.message);
+              return { data: null };
+            });
         })
       )).filter(crypto => crypto.data);
 
