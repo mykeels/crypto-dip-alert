@@ -121,6 +121,7 @@ Price Dip: ${program.price}${program.type === 'percent' ? '%' : ' cents'}
         }
         else if ((maxPrice - currentPrice) >= dipThreshold) {
           await notifications.map(fn => fn(coin, maxPrice, currentPrice, dipThreshold));
+          process.exit(0);
         }
 
       }
