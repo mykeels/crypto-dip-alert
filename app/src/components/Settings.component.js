@@ -9,6 +9,7 @@ import Header from './Header.component';
 import Button from './Button.component';
 import Spinner from './Spinner.component';
 import Notification from './Notification.component';
+import Spacer from './Spacer.component';
 
 import {
   TRACKING_CHOICES,
@@ -165,6 +166,7 @@ const Settings = () => {
           onTimeout={setNotificationVisibility}
           {...notificationContent}
         />
+        <Spacer height={40} />
       </ScrollView>
     </View>
   );
@@ -184,7 +186,8 @@ const styles = StyleSheet.create({
   },
   settingsText: {
     fontWeight: 'bold',
-    fontSize: 15,
+    fontSize: 16,
+    marginVertical: 5,
   },
   optionBlock: {
     marginVertical: 20,
@@ -194,6 +197,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginRight: 5,
     flex: 1,
+    textAlign: 'center',
   },
   textContainer: {
     flexDirection: 'row',

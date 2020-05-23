@@ -47,7 +47,7 @@ const Home = () => {
         <RefreshControl refreshing={refreshing} onRefresh={fetchPrices} />
       }>
       <AlertButton />
-      <Spacer height={70} />
+      <Spacer height={40} />
 
       <View style={styles.helpTextContainer}>
         <Icon
@@ -72,6 +72,7 @@ const Home = () => {
           return <CoinCard price={price} label={label} key={id} />;
         })
       )}
+      <Spacer height={20} />
       <View style={styles.helpTextContainer}>
         <Icon
           name="help-circle"
@@ -83,6 +84,7 @@ const Home = () => {
           Go to settings to configure notifications.
         </Text>
       </View>
+      <Spacer height={40} />
     </ScrollView>
   );
 };
@@ -95,6 +97,7 @@ const styles = StyleSheet.create({
   helpText: {
     color: colors.GREY,
     textAlign: 'center',
+    fontSize: 16,
   },
   helpTextContainer: {
     flexDirection: 'row',
