@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   optionBlock: {
-    marginVertical: 20,
+    marginVertical: 10,
   },
   textInput: {
     borderWidth: 2,

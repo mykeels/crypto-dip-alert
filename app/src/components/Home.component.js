@@ -69,7 +69,9 @@ const Home = () => {
           const {id, currencySymbol, symbol, rateUsd} = data;
 
           let label = `${symbol}`;
-          if (currencySymbol) label += ` ${currencySymbol}`;
+          if (currencySymbol) {
+            label += ` ${currencySymbol}`;
+          }
           const price = parseFloat(rateUsd).toFixed(2);
 
           return <CoinCard price={price} label={label} key={id} />;
