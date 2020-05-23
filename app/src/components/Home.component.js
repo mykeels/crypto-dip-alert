@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, ScrollView, RefreshControl} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -11,8 +11,7 @@ import Spinner from './Spinner.component';
 
 // utils
 import colors from '../utils/colors';
-import { USER_SETTINGS } from '../utils/constants';
-
+import {USER_SETTINGS} from '../utils/constants';
 
 const Home = () => {
   const [coinDetails, setCoinDetails] = useState([]);
@@ -24,16 +23,18 @@ const Home = () => {
     const stringSettings = await AsyncStorage.getItem(USER_SETTINGS);
     const settings = JSON.parse(stringSettings);
 
-    const result = await Promise
-      .all(settings.coinsToTrack.map((coin) => {
-        return fetch(`${baseUrl}/${coin}`, { method: 'GET' })
-          .then(res => res.json())
-      }));
+    const result = await Promise.all(
+      settings.coinsToTrack.map(coin => {
+        return fetch(`${baseUrl}/${coin}`, {method: 'GET'}).then(res =>
+          res.json(),
+        );
+      }),
+    );
 
     setCoinDetails(result);
     setIsLoading(false);
     refreshing && setIsRefreshing(false);
-  }
+  };
 
   useEffect(() => {
     fetchPrices();
@@ -42,10 +43,9 @@ const Home = () => {
   return (
     <ScrollView
       contentContainerStyle={styles.container}
-      refreshControl={<RefreshControl
-        refreshing={refreshing}
-        onRefresh={fetchPrices} />}
-    >
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={fetchPrices} />
+      }>
       <AlertButton />
       <Spacer height={70} />
 
@@ -56,22 +56,22 @@ const Home = () => {
           size={15}
           style={styles.helpIcon}
         />
-        <Text style={styles.helpText}>
-        Drag the screen down to refresh
-        </Text>
+        <Text style={styles.helpText}>Drag the screen down to refresh</Text>
       </View>
-      {isLoading ? <Spinner /> : coinDetails.map(({ data }) => {
-        console.log(JSON.stringify(data, null, 2));
-        const { id, currencySymbol, symbol, rateUsd } = data;
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        coinDetails.map(({data}) => {
+          console.log(JSON.stringify(data, null, 2));
+          const {id, currencySymbol, symbol, rateUsd} = data;
 
-        let label = `${symbol}`;
-        if (currencySymbol) label += ` ${currencySymbol}`;
-        const price = parseFloat(rateUsd).toFixed(2);
+          let label = `${symbol}`;
+          if (currencySymbol) label += ` ${currencySymbol}`;
+          const price = parseFloat(rateUsd).toFixed(2);
 
-        return (
-          <CoinCard price={price} label={label} key={id} />
-        )
-      })}
+          return <CoinCard price={price} label={label} key={id} />;
+        })
+      )}
       <View style={styles.helpTextContainer}>
         <Icon
           name="help-circle"
@@ -90,11 +90,11 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   helpText: {
     color: colors.GREY,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   helpTextContainer: {
     flexDirection: 'row',

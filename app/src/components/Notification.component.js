@@ -1,22 +1,39 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Text} from 'react-native';
 
 import colors from '../utils/colors';
 
+const Notification = ({visible, onTimeout, type, text}) => {
+  const [isVisible, setVisible] = useState(false);
 
-const Notification = ({ type, text }) => {
+  const duration = 5000;
+
+  useEffect(() => {
+    setVisible(visible);
+  }, [visible]);
+
+  if (!isVisible) return null;
+
   const textStyle = {
     color: colors.WHITE,
     backgroundColor: type === 'success' ? colors.GREEN : colors.RED,
     textAlign: 'center',
-    minWidth: 150,
+    minWidth: 200,
     alignSelf: 'center',
-    padding: 10,
+    padding: 16,
   };
 
-  return Boolean(text) && (
-    <Text style={textStyle}>{text}</Text>
-  );
+  if (duration) {
+    setTimeout(() => {
+      setVisible(false);
+
+      if (onTimeout) {
+        onTimeout(false);
+      }
+    }, duration);
+  }
+
+  return Boolean(text) && <Text style={textStyle}>{text}</Text>;
 };
 
-export default Notification
+export default Notification;
