@@ -12,6 +12,7 @@ import Spinner from './Spinner.component';
 // utils
 import colors from '../utils/colors';
 import {USER_SETTINGS} from '../utils/constants';
+import {LocalNotification} from '../utils/notifications';
 
 const Home = () => {
   const [coinDetails, setCoinDetails] = useState([]);
@@ -34,6 +35,8 @@ const Home = () => {
     setCoinDetails(result);
     setIsLoading(false);
     refreshing && setIsRefreshing(false);
+
+    settings.alerting ? LocalNotification(settings) : null;
   };
 
   useEffect(() => {
