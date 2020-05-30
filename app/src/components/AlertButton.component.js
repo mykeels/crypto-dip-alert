@@ -1,17 +1,26 @@
-import React, { memo, useEffect, useState, Fragment } from 'react';
-import { View, StyleSheet, Text, TouchableHighlight } from 'react-native';
+import React, {memo, useEffect, useState, Fragment} from 'react';
+import {View, StyleSheet, Text, TouchableHighlight} from 'react-native';
 
 import colors from '../utils/colors';
 import useAsyncStorage from '../hooks/useAsyncStorage';
-import { USER_SETTINGS } from '../utils/constants';
+import {USER_SETTINGS} from '../utils/constants';
 import Spinner from './Spinner.component';
 
 const AlerButton = () => {
+  const [settings, updateSettings] = useAsyncStorage(USER_SETTINGS);
   const [isAlertOn, setAlertStatus] = useState(false);
-  const errorStyle = { backgroundColor: isAlertOn ? colors.NONE : colors.RED };
-  const successStyle = { backgroundColor: isAlertOn ? colors.GREEN : colors.NONE };
+  const errorStyle = {backgroundColor: isAlertOn ? colors.NONE : colors.RED};
+  const successStyle = {
+    backgroundColor: isAlertOn ? colors.GREEN : colors.NONE,
+  };
 
-  const toggleAlerting = () => setAlertStatus(!isAlertOn);
+  const toggleAlerting = () => {
+    updateSettings({
+      ...settings,
+      alerting: !isAlertOn,
+    });
+    setAlertStatus(!isAlertOn);
+  };
 
   return (
     <View style={styles.container}>
@@ -23,7 +32,7 @@ const AlerButton = () => {
         </Fragment>
       </TouchableHighlight>
     </View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
@@ -31,11 +40,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   alertText: {
     fontWeight: 'bold',
-    fontSize: 18
+    fontSize: 18,
   },
   btnContainer: {
     borderWidth: 1,
@@ -43,12 +52,12 @@ const styles = StyleSheet.create({
     height: 30,
     width: 80,
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   btn: {
     height: 28,
     width: 40,
-  }
-})
+  },
+});
 
 export default AlerButton;

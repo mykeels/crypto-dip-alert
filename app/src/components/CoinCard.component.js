@@ -1,19 +1,14 @@
-import React, { memo } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, {memo} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 
 import colors from '../utils/colors';
 
-
-const CoinCard = (props) => {
-  const {
-    difference = null,
-    price,
-    label
-  } = props;
+const CoinCard = props => {
+  const {difference = null, price, label} = props;
 
   const isIncrease = difference > 0;
   const priceDiffColor = isIncrease ? colors.GREEN : colors.RED;
-  const diffStyle = { color: priceDiffColor };
+  const diffStyle = {color: priceDiffColor};
 
   return (
     <View style={styles.container}>
@@ -21,7 +16,8 @@ const CoinCard = (props) => {
         <Text style={styles.price}>${price}</Text>
         {difference && (
           <Text style={[styles.difference, diffStyle]}>
-            {isIncrease && '+'}{difference}
+            {isIncrease && '+'}
+            {difference}
           </Text>
         )}
       </View>
@@ -56,7 +52,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     color: colors.BLACK,
-    marginRight: 20
+    marginRight: 20,
   },
   difference: {
     color: colors.GREEN,
@@ -65,8 +61,8 @@ const styles = StyleSheet.create({
   priceContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
-  }
-})
+    alignItems: 'center',
+  },
+});
 
 export default memo(CoinCard);

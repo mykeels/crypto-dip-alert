@@ -1,15 +1,5 @@
-import React, {
-  useState,
-  useEffect,
-  useRef
-} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TextInput,
-} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import RadioForm from 'react-native-simple-radio-button';
 
@@ -19,76 +9,79 @@ import Header from './Header.component';
 import Button from './Button.component';
 import Spinner from './Spinner.component';
 import Notification from './Notification.component';
+import Spacer from './Spacer.component';
 
 import {
   TRACKING_CHOICES,
   SUPPORTED_COINS,
   USER_SETTINGS,
-  TRACKING_SYMBOLS
+  TRACKING_SYMBOLS,
 } from '../utils/constants';
 
 // hooks
 import useAsyncStorage from '../hooks/useAsyncStorage';
-
 
 const Settings = () => {
   const radioButtonRef = useRef(null);
   const [settings, updateSettings] = useAsyncStorage(USER_SETTINGS);
   const monitoringOptions = TRACKING_CHOICES.map((choice, index) => ({
     label: choice,
-    value: index
+    value: index,
   }));
 
   const [monitoringOption, setMonitoringOption] = useState(0);
   const [threshold, setThreshold] = useState('');
   const [userCoinsToTrack, setUserCoinsToTrack] = useState([]);
-  const [notification, setNotification] = useState({});
+  const [notificationContent, setNotificationContent] = useState({});
+
+  const [notficationVisibility, setNotificationVisibility] = useState(false);
 
   const onSubmit = () => {
     const trackingOption = TRACKING_CHOICES[monitoringOption];
 
+    setNotificationVisibility(true);
+
     const isThresholdNotInteger = isNaN(threshold);
     if (isThresholdNotInteger) {
-      const text = 'Threshold is not an integer.'
-      return setNotification({ type: 'error', text });
+      const text = 'Threshold is not an integer.';
+      return setNotificationContent({type: 'error', text});
     }
 
     const integerThreshold = parseInt(threshold, 10);
     if (integerThreshold < 0) {
-      const text = 'Threshold must be a positive integer'
-      return setNotification({ type: 'error', text });
+      const text = 'Threshold must be a positive integer';
+      return setNotificationContent({type: 'error', text});
     }
 
     if (trackingOption === 'Percent' && integerThreshold > 100) {
-      const text = 'Threshold cannot be more than 100%'
-      return setNotification({ type: 'error', text });
+      const text = 'Threshold cannot be more than 100%';
+      return setNotificationContent({type: 'error', text});
     }
 
     updateSettings({
       ...settings,
       trackingOption,
       threshold: parseInt(threshold, 10),
-      coinsToTrack: userCoinsToTrack
+      coinsToTrack: userCoinsToTrack,
     });
-    setNotification({ type: 'success', text: 'Update Successful' });
+    setNotificationContent({type: 'success', text: 'Update Successful'});
   };
 
   const onCheckChange = (coin, value) => {
     if (value) {
-      return setUserCoinsToTrack([
-        ...userCoinsToTrack,
-        coin
-      ]);
+      return setUserCoinsToTrack([...userCoinsToTrack, coin]);
     }
     const newUserCoins = userCoinsToTrack.filter(userCoin => {
       return userCoin !== coin;
     });
-    return setUserCoinsToTrack(newUserCoins)
-  }
+    return setUserCoinsToTrack(newUserCoins);
+  };
 
   useEffect(() => {
     if (settings) {
-      const monitorOptionIdx = TRACKING_CHOICES.indexOf(settings.trackingOption);
+      const monitorOptionIdx = TRACKING_CHOICES.indexOf(
+        settings.trackingOption,
+      );
       radioButtonRef.current.updateIsActiveIndex(monitorOptionIdx);
       setMonitoringOption(monitorOptionIdx);
       setThreshold(settings.threshold.toString());
@@ -101,7 +94,7 @@ const Settings = () => {
       <View style={{flex: 1}}>
         <Spinner />
       </View>
-    )
+    );
   }
 
   return (
@@ -116,7 +109,7 @@ const Settings = () => {
             initial={monitoringOption}
             ref={radioButtonRef}
             radio_props={monitoringOptions}
-            onPress={(value) => setMonitoringOption(value)}
+            onPress={value => setMonitoringOption(value)}
             buttonColor={colors.BLACK}
             labelColor={colors.BLACK}
           />
@@ -129,8 +122,8 @@ const Settings = () => {
           <View style={styles.textContainer}>
             <TextInput
               style={styles.textInput}
-              placeholder='Enter a number'
-              onChangeText={(value) => setThreshold(value)}
+              placeholder="Enter a number"
+              onChangeText={value => setThreshold(value)}
               textContentType={'oneTimeCode'}
               keyboardType={'decimal-pad'}
               enablesReturnKeyAutomatically
@@ -151,7 +144,10 @@ const Settings = () => {
 
             return (
               <View style={styles.coinsContainer} key={index}>
-                <CheckBox value={isChecked} onValueChange={(value) => onCheckChange(coin.value, value)} />
+                <CheckBox
+                  value={isChecked}
+                  onValueChange={value => onCheckChange(coin.value, value)}
+                />
                 <Text>
                   {coin.abbreviation} ({coin.value})
                 </Text>
@@ -165,7 +161,12 @@ const Settings = () => {
           btnStyle={styles.updateBtn}
           onPress={onSubmit}
         />
-        <Notification {...notification} />
+        <Notification
+          visible={notficationVisibility}
+          onTimeout={setNotificationVisibility}
+          {...notificationContent}
+        />
+        <Spacer height={40} />
       </ScrollView>
     </View>
   );
@@ -185,20 +186,22 @@ const styles = StyleSheet.create({
   },
   settingsText: {
     fontWeight: 'bold',
-    fontSize: 15
+    fontSize: 16,
+    marginVertical: 5,
   },
   optionBlock: {
-    marginVertical: 20,
+    marginVertical: 10,
   },
   textInput: {
     borderWidth: 2,
     paddingHorizontal: 10,
     marginRight: 5,
-    flex: 1
+    flex: 1,
+    textAlign: 'center',
   },
   textContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   activeOption: {
     fontWeight: 'bold',
@@ -207,8 +210,8 @@ const styles = StyleSheet.create({
   },
   coinsContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default Settings;
